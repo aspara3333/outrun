@@ -42,4 +42,7 @@ class Car:
         torque=((self.power[self.power_array]/1.3596)/(self.rpm*2*3.14/60/100))
         acc=((torque*self.gear*self.final)/(self.outer_cir*self.weight))
         self.kmh=self.kmh+acc*0.125
+
+rx8=Car()
+
         
