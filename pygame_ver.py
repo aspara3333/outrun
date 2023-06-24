@@ -64,6 +64,7 @@ class meter:
         
 
 driving=Car('rx8')
+defi=meter()
 
 def main():
 #   画像読み込み
