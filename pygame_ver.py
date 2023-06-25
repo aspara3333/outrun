@@ -58,22 +58,27 @@ class meter:
 #   画像読み込み(メーター系)
         self.defi=pg.image.load('./image/defi_250.png')
         self.defi_arrow=pg.image.load('./image/defi_arrow_250.png')
+        self.defi=pg.transform.scale(self.defi,(200,200))
 
     def write(self,rpm):
         self.arrow_deg=rpm*0.03*-1
         
+    def display(self):
+        screen.blit(self.defi,(800,500))
+        
 
 driving=Car('rx8')
 defi=meter()
+defi.display()
 
 def main():
 #   画像読み込み
 
-    screen.fill(bg_color)
+    #screen.fill(bg_color)
     clock=pg.time.Clock()
     while True:
         
-        screen.fill(bg_color)
+        #screen.fill(bg_color)
         pg.display.update()
         clock.tick(FPS)
 
