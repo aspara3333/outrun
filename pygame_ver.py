@@ -24,7 +24,7 @@ class Car:
         self.rpm=1000
         self.kmh_be=0
         self.kmh=0
-        self.gear=0
+        self.gear=1000
         self.gear_ck=0
         self.gear_n=0
         self.speed=0
@@ -37,7 +37,9 @@ class Car:
         self.weight=0
 #   車両データ読み込み
         self.speed=int(car_ini[f'{self.model}']['speed'])
-        self.rev=int(car_ini[f'{self.model}']['rev']) 
+        self.rev=int(car_ini[f'{self.model}']['rev'])
+        for i in range(0,int(self.rev/100)):
+            self.power.append(int(car_ini[f'{self.model}']['rpm'+str(i*100)]))
         for i in range(1,self.speed+1):
             self.gear_ratio.append(float(car_ini[f'{self.model}'][f'g{i}']))
         self.final=float(car_ini[f'{self.model}']['final']) 
@@ -53,6 +55,7 @@ class Car:
         torque=((self.power[self.power_array]/1.3596)/(self.rpm*2*3.14/60/100))
         acc=((torque*self.gear*self.final)/(self.outer_cir*self.weight))
         self.kmh=self.kmh+acc*0.125
+        print(self.kmh)
 #   エンジン
     def engine(self):
         pg.event.pump()
