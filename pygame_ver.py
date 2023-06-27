@@ -24,9 +24,9 @@ class Car:
         self.rpm=1000
         self.kmh_be=0
         self.kmh=0
-        self.gear=1000
+        self.gear=1
         self.gear_ck=0
-        self.gear_n=0
+        self.gear_n=1
         self.speed=0
         self.power_array=0
         self.gear_ratio=[]
@@ -45,15 +45,16 @@ class Car:
         self.final=float(car_ini[f'{self.model}']['final']) 
         self.outer_cir=float(car_ini[f'{self.model}']['outer_cir'])
         self.weight=int(car_ini[f'{self.model}']['weight'])
+        self.gear=self.gear_ratio[1]
 #   車速計測
     def vehicle_spd(self):
         for i in range(0,int(self.rev/100)):
             if(int(self.rpm)<int(i+1)*100):
                 self.power_array=i
                 break
-        self.kmh_be=int((float(self.rpm)*float(self.outer_cir)*60.0)/(self.gear*self.final*1000.0))
+        self.kmh_be=int((float(self.rpm)*float(self.outer_cir)*60.0)/((self.gear)*(self.final)*1000.0))
         torque=((self.power[self.power_array]/1.3596)/(self.rpm*2*3.14/60/100))
-        acc=((torque*self.gear*self.final)/(self.outer_cir*self.weight))
+        acc=(((torque)*(self.gear)*(self.final))/((self.outer_cir)*(self.weight)))
         self.kmh=self.kmh+acc*0.125
         print(self.kmh)
 #   エンジン
@@ -65,7 +66,21 @@ class Car:
                 if(int(self.rpm)<int(i+1)*100):
                     self.power_array=i
                     break
-                
+        elif((self.pressed[K_w]!=0)and(self.rpm>600)):
+            self.rpm=self.rpm-100
+        if((self.pressed[K_s])and(self.rpm>100)):
+            self.rpm=self.rpm
+        if(self.gear_ck==0):
+            if((self.pressed[K_LSHIFT])and(self.gear_n<self.speed)):
+                self.gear_n=self.gear_n+1
+                self.gear=self.gear_ratio[self.gear_n]
+            elif((self.pressed[K_LCTRL])and(self.gear_n>0)):
+                self.gear_n=self.gear_n-1
+                self.gear=self.gear_ratio[self.gear_n]
+            gear_ck=1
+        if(self.pressed[K_c]):
+            self.rpm=600
+                        
 class meter:
     def __init__(self):
 #   画像読み込み(メーター系)
