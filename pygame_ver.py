@@ -56,28 +56,32 @@ class Car:
         torque=((self.power[self.power_array]/1.3596)/(self.rpm*2*3.14/60/100))
         acc=(((torque)*(self.gear)*(self.final))/((self.outer_cir)*(self.weight)))
         self.kmh=self.kmh+acc*0.125
-        print(self.kmh)
+        print(f'RPM:{self.rpm}, km/h:{round(self.kmh,0)}, ')
 #   エンジン
     def engine(self):
         pg.event.pump()
         self.pressed=pg.key.get_pressed()
-        if((self.pressed[K_w])and(self.rpm<self.rev)):
+        print(self.pressed[K_w])
+        if((self.pressed[K_w]==True)and(self.rpm<self.rev)):
             for i in range(0,int(self.rev/100)):
                 if(int(self.rpm)<int(i+1)*100):
                     self.power_array=i
                     break
-        elif((self.pressed[K_w]!=0)and(self.rpm>600)):
+        elif((self.pressed[K_w]==False)and(self.rpm>600)):
+            print('kansei')
             self.rpm=self.rpm-100
-        if((self.pressed[K_s])and(self.rpm>100)):
+        if((self.pressed[K_s]==True)and(self.rpm>100)):
             self.rpm=self.rpm
         if(self.gear_ck==0):
-            if((self.pressed[K_LSHIFT])and(self.gear_n<self.speed)):
+            if((self.pressed[K_LSHIFT]==True)and(self.gear_n<self.speed)):
                 self.gear_n=self.gear_n+1
                 self.gear=self.gear_ratio[self.gear_n]
-            elif((self.pressed[K_LCTRL])and(self.gear_n>0)):
+            elif((self.pressed[K_LCTRL]==True)and(self.gear_n>0)):
                 self.gear_n=self.gear_n-1
                 self.gear=self.gear_ratio[self.gear_n]
-            gear_ck=1
+            self.gear_ck=1
+        if((self.pressed[K_LSHIFT]==False)and(self.pressed[K_LCTRL]==False)):
+            self.gear_ck=0
         if(self.pressed[K_c]):
             self.rpm=600
                         
