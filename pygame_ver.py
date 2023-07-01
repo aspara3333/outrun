@@ -15,6 +15,12 @@ pg.init()
 screen=pg.display.set_mode(window_size)
 pg.display.set_caption('outrun')
 
+def rotate(screen,image,angle):
+    rotated=pg.transform.rotate(image,angle)
+    size=rotated.get_size()
+    pos=(image.x+image.w/2-size[0]/2,image.y+image.h/2-size[1]/2)
+    screen.blit(rotated,pos)
+
 class Car:
     global car_ini
     def __init__(self,model):
@@ -56,7 +62,7 @@ class Car:
         torque=((self.power[self.power_array]/1.3596)/(self.rpm*2*3.14/60/100))
         acc=(((torque)*(self.gear)*(self.final))/((self.outer_cir)*(self.weight)))
         self.kmh=self.kmh+acc*0.125
-        print(f'RPM:{self.rpm}, km/h:{round(self.kmh,0)}, gear:{self.gear_n}, torque:{round(torque,0)}')
+        print(f'TORQUE:{torque}, ACC:{acc}, RPM:{self.rpm}, km/h:{round(self.kmh,0)}, gear:{self.gear_n}, torque:{round(torque,0)}')
 #   エンジン
     def engine(self):
         pg.event.pump()
@@ -95,16 +101,21 @@ class meter:
         self.defi_arrow_rotated=pg.image.load('./image/defi_arrow.png')
         self.defi=pg.transform.scale(self.defi,(200,200))
         self.defi_arrow=pg.transform.scale(self.defi_arrow,(200,200))
+        self.arrow_deg=0
+        self.arrow_pos=0,0
+        self.arrow_size=0
 
     def write(self,rpm):
         self.arrow_deg=rpm*0.03*-1
         self.defi_arrow_angle=self.arrow_deg
         self.defi_arrow_rotate=pg.transform.rotate(self.defi_arrow,self.arrow_deg)
-        self.defi_arrow_rotated=self.defi_arrow_rotate.get_rect(center=self.defi_arrow.get_rect(center=(100,100).center))
+        self.arrow_rotate_size=self.defi_arrow_rotate.get_size()
+        self.arrow_size=self.defi_arrow.get_size()
+        self.arrow_pos=((self.arrow_size[0]+self.arrow_size[1]/2-self.arrow_rotate_size[0]/2)+600,(self.arrow_size[1]+self.arrow_size[1]/2-self.arrow_rotate_size[1]/2)+300)
         
     def display(self):
         screen.blit(self.defi,(800,500))
-        screen.blit(self.defi_arrow_rotated,(800,500))
+        screen.blit(self.defi_arrow_rotate,self.arrow_pos)
         
 
 driving=Car('rx8')
@@ -121,8 +132,8 @@ def main():
         driving.vehicle_spd()
         defi.write(driving.rpm)
         defi.display()
-        #screen.fill(bg_color)
         pg.display.update()
+        screen.fill(bg_color)
         clock.tick(FPS)
 
 if(__name__=='__main__'):
