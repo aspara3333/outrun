@@ -28,7 +28,6 @@ class Car:
         self.model=model
         self.power=[]
         self.rpm=1000
-        self.kmh_be=0
         self.kmh=0
         self.gear=1
         self.gear_ck=0
@@ -41,6 +40,8 @@ class Car:
         self.spd=0
         self.rev=0
         self.weight=0
+        self.weight=0
+        self.torque=0
 #   車両データ読み込み
         self.speed=int(car_ini[f'{self.model}']['speed'])
         self.rev=int(car_ini[f'{self.model}']['rev'])
@@ -58,17 +59,15 @@ class Car:
     #        if(int(self.rpm)<int(i+1)*100):
     #            self.power_array=i
     #            break
-        self.kmh_be=int((float(self.rpm)*float(self.outer_cir)*60.0)/((self.gear)*(self.final)*1000.0))
-        torque=((self.power[self.power_array]/1.3596)/(self.rpm*2*3.14/60/100))
-        acc=(((torque)*(self.gear)*(self.final))/((self.outer_cir)*(self.weight)))
-        self.kmh=self.kmh+acc*0.125
-        print(f'TORQUE:{torque}, ACC:{acc}, RPM:{self.rpm}, km/h:{round(self.kmh,0)}, gear:{self.gear_n}, torque:{round(torque,0)}')
+        self.kmh=int((float(self.rpm)*float(self.outer_cir)*60.0)/((self.gear)*(self.final)*1000.0))
+        self.torque=((self.power[self.power_array]/1.3596)/(self.rpm*2*3.14/60/100))
+        print(f'TORQUE:{round(self.torque,0)}, RPM:{self.rpm}, km/h:{round(self.kmh,0)}, gear:{self.gear_n}, gear_ratio:{self.gear_n}')
 #   エンジン
     def engine(self):
         pg.event.pump()
         self.pressed=pg.key.get_pressed()
 #        print(self.pressed[K_w])
-        if((self.pressed[K_w]==True)and(self.rpm<self.rev)):
+        if((self.pressed[K_w]==True)and(self.rpm<self.rev)and(self.rpm>300)):
             for i in range(0,int(self.rev/100)):
                 if(int(self.rpm)<int(i+1)*100):
                     self.power_array=i
@@ -78,7 +77,8 @@ class Car:
             print('kansei')
             self.rpm=self.rpm-100
         if((self.pressed[K_s]==True)and(self.rpm>100)):
-            self.rpm=self.rpm
+            print('brake')
+            self.rpm=self.rpm-200
         if(self.gear_ck==0):
             if((self.pressed[K_LSHIFT]==True)and(self.gear_n<self.speed)):
                 self.gear_n=self.gear_n+1
