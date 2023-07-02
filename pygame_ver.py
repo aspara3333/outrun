@@ -75,10 +75,10 @@ class Car:
                     break
         elif((self.pressed[K_w]==False)and(self.rpm>600)):
             print('kansei')
-            self.rpm=self.rpm-100
+            self.rpm=self.rpm-50
         if((self.pressed[K_s]==True)and(self.rpm>100)):
             print('brake')
-            self.rpm=self.rpm-200
+            self.rpm=self.rpm-100
         if(self.gear_ck==0):
             if((self.pressed[K_LSHIFT]==True)and(self.gear_n<self.speed)):
                 self.gear_n=self.gear_n+1
