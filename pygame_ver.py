@@ -67,36 +67,30 @@ class Car:
         pg.event.pump()
         self.pressed=pg.key.get_pressed()
 #        print(self.pressed[K_w])
-#       アクセルオン
         if((self.pressed[K_w]==True)and(self.rpm<self.rev)and(self.rpm>300)):
             for i in range(0,int(self.rev/100)):
                 if(int(self.rpm)<int(i+1)*100):
                     self.power_array=i
                     self.rpm=self.rpm+(int(self.power[self.power_array]))
                     break
-#       アクセルオフ
         elif((self.pressed[K_w]==False)and(self.rpm>600)):
             print('kansei')
             self.rpm=self.rpm-50
-#       ブレーキ
         if((self.pressed[K_s]==True)and(self.rpm>100)):
             print('brake')
             self.rpm=self.rpm-100
         if(self.gear_ck==0):
-#       シフトアップ
             if((self.pressed[K_LSHIFT]==True)and(self.gear_n<self.speed)):
                 self.gear_n=self.gear_n+1
                 self.gear=self.gear_ratio[self.gear_n-1]
-#       シフトダウン
             elif((self.pressed[K_LCTRL]==True)and(self.gear_n-1>0)):
                 self.gear_n=self.gear_n-1
                 self.gear=self.gear_ratio[self.gear_n-1]
             self.gear_ck=1
         if((self.pressed[K_LSHIFT]==False)and(self.pressed[K_LCTRL]==False)):
             self.gear_ck=0
-#       スターター
-        if((self.pressed[K_c]==True)and(self.rpm<500)):
-            self.rpm=self.rpm+100
+        if(self.pressed[K_c]==True):
+            self.rpm=600
                         
 class meter:
     def __init__(self):
