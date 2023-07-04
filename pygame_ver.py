@@ -7,7 +7,7 @@ import configparser
 car_ini=configparser.ConfigParser()
 car_ini.read('./car.ini',encoding='UTF-8')
 
-window_size=WIDTH,HEIGHT=1000,700
+window_size=WIDTH,HEIGHT=1280,720
 bg_color=(0,0,0)
 FPS=30
 
@@ -67,30 +67,36 @@ class Car:
         pg.event.pump()
         self.pressed=pg.key.get_pressed()
 #        print(self.pressed[K_w])
+#       アクセルオン
         if((self.pressed[K_w]==True)and(self.rpm<self.rev)and(self.rpm>300)):
             for i in range(0,int(self.rev/100)):
                 if(int(self.rpm)<int(i+1)*100):
                     self.power_array=i
                     self.rpm=self.rpm+(int(self.power[self.power_array]))
                     break
+#       アクセルオフ
         elif((self.pressed[K_w]==False)and(self.rpm>600)):
             print('kansei')
             self.rpm=self.rpm-50
+#       ブレーキ
         if((self.pressed[K_s]==True)and(self.rpm>100)):
             print('brake')
             self.rpm=self.rpm-100
         if(self.gear_ck==0):
+#       シフトアップ
             if((self.pressed[K_LSHIFT]==True)and(self.gear_n<self.speed)):
                 self.gear_n=self.gear_n+1
                 self.gear=self.gear_ratio[self.gear_n-1]
+#       シフトダウン
             elif((self.pressed[K_LCTRL]==True)and(self.gear_n-1>0)):
                 self.gear_n=self.gear_n-1
                 self.gear=self.gear_ratio[self.gear_n-1]
             self.gear_ck=1
         if((self.pressed[K_LSHIFT]==False)and(self.pressed[K_LCTRL]==False)):
             self.gear_ck=0
-        if(self.pressed[K_c]==True):
-            self.rpm=600
+#       スターター
+        if((self.pressed[K_c]==True)and(self.rpm<500)):
+            self.rpm=self.rpm+100
                         
 class meter:
     def __init__(self):
@@ -111,10 +117,10 @@ class meter:
         self.defi_arrow_rotate=pg.transform.rotate(self.defi_arrow,self.arrow_deg)
         self.arrow_rotate_size=self.defi_arrow_rotate.get_size()
         self.arrow_size=self.defi_arrow.get_size()
-        self.arrow_pos=((self.arrow_size[0]+self.arrow_size[1]/2-self.arrow_rotate_size[0]/2)+600,(self.arrow_size[1]+self.arrow_size[1]/2-self.arrow_rotate_size[1]/2)+300)
+        self.arrow_pos=((self.arrow_size[0]+self.arrow_size[1]/2-self.arrow_rotate_size[0]/2)+850,(self.arrow_size[1]+self.arrow_size[1]/2-self.arrow_rotate_size[1]/2)+300)
         
     def display(self):
-        screen.blit(self.defi,(800,500))
+        screen.blit(self.defi,(1050,500))
         screen.blit(self.defi_arrow_rotate,self.arrow_pos)
         
 
