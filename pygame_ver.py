@@ -37,9 +37,9 @@ class Car:
         self.gear_ratio=[]
         self.final=0
         self.outer_cir=0
+        self.diameter=0
         self.spd=0
         self.rev=0
-        self.weight=0
         self.weight=0
         self.torque=0
 #   車両データ読み込み
@@ -51,6 +51,7 @@ class Car:
             self.gear_ratio.append(float(car_ini[f'{self.model}'][f'g{i-1}']))
         self.final=float(car_ini[f'{self.model}']['final']) 
         self.outer_cir=float(car_ini[f'{self.model}']['outer_cir'])
+        self.diameter=int(car_ini[f'{self.model}']['diameter'])
         self.weight=int(car_ini[f'{self.model}']['weight'])
         self.gear=self.gear_ratio[0]
 #   車速計測
@@ -61,7 +62,8 @@ class Car:
     #            break
         self.kmh=int((float(self.rpm)*float(self.outer_cir)*60.0)/((self.gear)*(self.final)*1000.0))
         self.torque=((self.power[self.power_array]/1.3596)/(self.rpm*2*3.14/60/100))
-        print(f'TORQUE:{round(self.torque,0)}, RPM:{self.rpm}, km/h:{round(self.kmh,0)}, gear:{self.gear_n}, gear_ratio:{self.gear_n}')
+        acc=((self.torque*self.gear*self.final)/(self.diameter*self.weight))
+        print(f'TORQUE:{round(self.torque,0)}, RPM:{self.rpm}, km/h:{round(self.kmh,0)}, gear:{self.gear_n}, gear_ratio:{self.gear_n}, acc:{acc}')
 #   エンジン
     def engine(self):
         pg.event.pump()
