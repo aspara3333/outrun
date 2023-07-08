@@ -63,7 +63,7 @@ class Car:
         self.kmh=int((float(self.rpm)*float(self.outer_cir)*60.0)/((self.gear)*(self.final)*1000.0))
         self.torque=((self.power[self.power_array]/1.3596)/(self.rpm*2*3.14/60/100))
         acc=((self.torque*self.gear*self.final)/(self.diameter*self.weight))
-        print(f'TORQUE:{round(self.torque,0)}, RPM:{self.rpm}, km/h:{round(self.kmh,0)}, gear:{self.gear_n}, gear_ratio:{self.gear_n}, acc:{acc}')
+        print(f'TORQUE:{round(self.torque,0)}, RPM:{self.rpm}, km/h:{round(self.kmh,0)}, gear:{self.gear_n}, gear_ratio:{self.gear}, acc:{acc}')
 #   エンジン
     def engine(self):
         pg.event.pump()

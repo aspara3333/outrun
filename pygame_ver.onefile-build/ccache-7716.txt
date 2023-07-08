@@ -1,0 +1,61 @@
+[2023-07-08T10:35:09.308166 26972] === CCACHE 4.6 STARTED =========================================
+[2023-07-08T10:35:09.308166 26972] Config: (default) absolute_paths_in_stderr = false
+[2023-07-08T10:35:09.308166 26972] Config: (default) base_dir = 
+[2023-07-08T10:35:09.308166 26972] Config: (environment) cache_dir = C:\Users\syoug\AppData\Local\Nuitka\Nuitka\Cache\ccache
+[2023-07-08T10:35:09.308166 26972] Config: (default) compiler = 
+[2023-07-08T10:35:09.308166 26972] Config: (default) compiler_check = mtime
+[2023-07-08T10:35:09.308166 26972] Config: (default) compiler_type = auto
+[2023-07-08T10:35:09.308166 26972] Config: (default) compression = true
+[2023-07-08T10:35:09.308166 26972] Config: (default) compression_level = 0
+[2023-07-08T10:35:09.308166 26972] Config: (default) cpp_extension = 
+[2023-07-08T10:35:09.308166 26972] Config: (default) debug = false
+[2023-07-08T10:35:09.308166 26972] Config: (default) debug_dir = 
+[2023-07-08T10:35:09.308166 26972] Config: (default) depend_mode = false
+[2023-07-08T10:35:09.308166 26972] Config: (default) direct_mode = true
+[2023-07-08T10:35:09.308166 26972] Config: (default) disable = false
+[2023-07-08T10:35:09.308166 26972] Config: (default) extra_files_to_hash = 
+[2023-07-08T10:35:09.308166 26972] Config: (default) file_clone = false
+[2023-07-08T10:35:09.308166 26972] Config: (default) hard_link = false
+[2023-07-08T10:35:09.308166 26972] Config: (default) hash_dir = true
+[2023-07-08T10:35:09.308166 26972] Config: (default) ignore_headers_in_manifest = 
+[2023-07-08T10:35:09.308166 26972] Config: (default) ignore_options = 
+[2023-07-08T10:35:09.308166 26972] Config: (default) inode_cache = false
+[2023-07-08T10:35:09.308166 26972] Config: (default) keep_comments_cpp = false
+[2023-07-08T10:35:09.308166 26972] Config: (default) limit_multiple = 0.8
+[2023-07-08T10:35:09.308166 26972] Config: (environment) log_file = D:\document\git\outrun\pygame_ver.onefile-build\ccache-7716.txt
+[2023-07-08T10:35:09.308166 26972] Config: (default) max_files = 0
+[2023-07-08T10:35:09.308166 26972] Config: (default) max_size = 5.0G
+[2023-07-08T10:35:09.308166 26972] Config: (default) namespace = 
+[2023-07-08T10:35:09.308166 26972] Config: (default) path = 
+[2023-07-08T10:35:09.308166 26972] Config: (default) pch_external_checksum = false
+[2023-07-08T10:35:09.308166 26972] Config: (default) prefix_command = 
+[2023-07-08T10:35:09.308166 26972] Config: (default) prefix_command_cpp = 
+[2023-07-08T10:35:09.308166 26972] Config: (default) read_only = false
+[2023-07-08T10:35:09.308166 26972] Config: (default) read_only_direct = false
+[2023-07-08T10:35:09.308166 26972] Config: (default) recache = false
+[2023-07-08T10:35:09.308166 26972] Config: (default) reshare = false
+[2023-07-08T10:35:09.308166 26972] Config: (default) run_second_cpp = true
+[2023-07-08T10:35:09.308166 26972] Config: (default) secondary_storage = 
+[2023-07-08T10:35:09.308166 26972] Config: (environment) sloppiness = include_file_mtime, include_file_ctime
+[2023-07-08T10:35:09.308166 26972] Config: (default) stats = true
+[2023-07-08T10:35:09.308166 26972] Config: (default) stats_log = 
+[2023-07-08T10:35:09.308166 26972] Config: (default) temporary_dir = C:\Users\syoug\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp
+[2023-07-08T10:35:09.308166 26972] Config: (default) umask = 
+[2023-07-08T10:35:09.308166 26972] Command line: C:\Users\syoug\AppData\Local\Nuitka\Nuitka\Cache\downloads\ccache\v4.6\ccache.exe C:\Users\syoug\AppData\Local\Nuitka\Nuitka\Cache\downloads\gcc\x86_64\11.3.0-14.0.3-10.0.0-msvcrt-r3\mingw64\bin\gcc.exe -o static_src\OnefileBootstrap.o -c -flto -fuse-linker-plugin -fno-fat-lto-objects -std=c11 -fvisibility=hidden -fwrapv -pipe -fpartial-inlining -ftrack-macro-expansion=0 -Wno-deprecated-declarations -fno-var-tracking -Wno-misleading-indentation -fcompare-debug-second -O3 -D_WIN32_WINNT=0x0501 -D__NUITKA_NO_ASSERT__ -D_NUITKA_WINMAIN_ENTRY_POINT -D_NUITKA_ONEFILE_MODE -I. -IC:\Users\syoug\AppData\Local\Programs\Python\Python38\lib\SITE-P~1\nuitka\build\include -IC:\Users\syoug\AppData\Local\Programs\Python\Python38\lib\SITE-P~1\nuitka\build\static_src -IC:\Users\syoug\AppData\Local\Programs\Python\Python38\lib\SITE-P~1\nuitka\build\inline_copy\zstd static_src\OnefileBootstrap.c
+[2023-07-08T10:35:09.311672 26972] Hostname: pc-ryzen7
+[2023-07-08T10:35:09.311672 26972] Working directory: D:/document/git/outrun/pygame_ver.onefile-build
+[2023-07-08T10:35:09.311672 26972] Compiler type: gcc
+[2023-07-08T10:35:09.312679 26972] Source file: static_src\OnefileBootstrap.c
+[2023-07-08T10:35:09.312679 26972] Object file: static_src\OnefileBootstrap.o
+[2023-07-08T10:35:09.312679 26972] Trying direct lookup
+[2023-07-08T10:35:09.312679 26972] Retrieved 7a28suaa746v7l46r7b60i9q133o7vipm from primary storage (C:\Users\syoug\AppData\Local\Nuitka\Nuitka\Cache\ccache/7/a/28suaa746v7l46r7b60i9q133o7vipmM)
+[2023-07-08T10:35:09.312679 26972] Looking for result key in C:\Users\syoug\AppData\Local\Nuitka\Nuitka\Cache\ccache/7/a/28suaa746v7l46r7b60i9q133o7vipmM
+[2023-07-08T10:35:09.353753 26972] Got result key from manifest
+[2023-07-08T10:35:09.353753 26972] Retrieved d92eq4dngmtdsnebhnj854v0h0r1j0ani from primary storage (C:\Users\syoug\AppData\Local\Nuitka\Nuitka\Cache\ccache/d/9/2eq4dngmtdsnebhnj854v0h0r1j0aniR)
+[2023-07-08T10:35:09.353753 26972] Reading embedded entry #0 .o (552141 bytes)
+[2023-07-08T10:35:09.353753 26972] Writing to static_src\OnefileBootstrap.o
+[2023-07-08T10:35:09.354757 26972] Succeeded getting cached result
+[2023-07-08T10:35:09.354757 26972] Result: direct_cache_hit
+[2023-07-08T10:35:09.354757 26972] Result: primary_storage_hit
+[2023-07-08T10:35:09.354757 26972] Acquired lock C:\Users\syoug\AppData\Local\Nuitka\Nuitka\Cache\ccache/5/c/stats.lock
+[2023-07-08T10:35:09.355756 26972] Releasing lock C:\Users\syoug\AppData\Local\Nuitka\Nuitka\Cache\ccache/5/c/stats.lock
