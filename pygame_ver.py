@@ -37,11 +37,13 @@ class Car:
         self.gear_ratio=[]
         self.final=0
         self.outer_cir=0
-        self.diameter=0
+        self.radius=0
         self.spd=0
         self.rev=0
         self.weight=0
         self.torque=0
+        self.shift=0
+        self.rpm_shift=0
 #   車両データ読み込み
         self.speed=int(car_ini[f'{self.model}']['speed'])
         self.rev=int(car_ini[f'{self.model}']['rev'])
@@ -51,7 +53,7 @@ class Car:
             self.gear_ratio.append(float(car_ini[f'{self.model}'][f'g{i-1}']))
         self.final=float(car_ini[f'{self.model}']['final']) 
         self.outer_cir=float(car_ini[f'{self.model}']['outer_cir'])
-        self.diameter=int(car_ini[f'{self.model}']['diameter'])
+        self.radius=int(car_ini[f'{self.model}']['radius'])
         self.weight=int(car_ini[f'{self.model}']['weight'])
         self.gear=self.gear_ratio[0]
 #   車速計測
@@ -60,45 +62,64 @@ class Car:
     #        if(int(self.rpm)<int(i+1)*100):
     #            self.power_array=i
     #            break
-        self.kmh=int((float(self.rpm)*float(self.outer_cir)*60.0)/((self.gear)*(self.final)*1000.0))
+        self.kmh=int((float(self.rpm))/((self.gear)*(self.final))*float(self.outer_cir)*60.0/1000.0)
         self.torque=((self.power[self.power_array]/1.3596)/(self.rpm*2*3.14/60/100))
-        acc=((self.torque*self.gear*self.final)/(self.diameter*self.weight))
-        print(f'TORQUE:{round(self.torque,0)}, RPM:{self.rpm}, km/h:{round(self.kmh,0)}, gear:{self.gear_n}, gear_ratio:{self.gear}, acc:{acc}')
+        acc=((self.power_array*2*self.gear*self.final)/(self.radius*self.weight))
+        print(f'TORQUE:{round(self.torque,0)}, RPM:{self.rpm}, km/h:{round(self.kmh,0)}, gear:{self.gear_n}, gear_ratio:{self.gear}, acc:{acc}, power_array:{self.power_array}')
 #   エンジン
     def engine(self):
         pg.event.pump()
         self.pressed=pg.key.get_pressed()
 #        print(self.pressed[K_w])
+        if(self.shift==0):
 #       アクセル
-        if((self.pressed[K_w]==True)and(self.rpm<self.rev)and(self.rpm>300)):
-            for i in range(0,int(self.rev/100)):
-                if(int(self.rpm)<int(i+1)*100):
-                    self.power_array=i
-                    self.rpm=self.rpm+(int(self.power[self.power_array]))
-                    break
+            if((self.pressed[K_w]==True)and(self.rpm<self.rev)and(self.rpm>300)):
+                for i in range(0,int(self.rev/100)):
+                    if(int(self.rpm)<int(i+1)*100):
+                        self.power_array=i
+                        self.rpm=self.rpm+(int(self.power[self.power_array]))
+                        break
 #       アクセルオフ
-        elif((self.pressed[K_w]==False)and(self.rpm>600)):
-            print('kansei')
-            self.rpm=self.rpm-50
+            elif((self.pressed[K_w]==False)and(self.rpm>600)):
+                print('kansei')
+                self.rpm=self.rpm-50
 #       ブレーキ
-        if((self.pressed[K_s]==True)and(self.rpm>100)):
-            print('brake')
-            self.rpm=self.rpm-100
-        if(self.gear_ck==0):
+            if((self.pressed[K_s]==True)and(self.rpm>100)):
+                print('brake')
+                self.rpm=self.rpm-100
+            if(self.gear_ck==0):
 #           シフトアップ
-            if((self.pressed[K_LSHIFT]==True)and(self.gear_n<self.speed)):
-                self.gear_n=self.gear_n+1
-                self.gear=self.gear_ratio[self.gear_n-1]
+                if((self.pressed[K_LSHIFT]==True)and(self.gear_n<self.speed)):
+                    self.gear_n=self.gear_n+1
+                    self.gear=self.gear_ratio[self.gear_n-1]
+                    self.rpm_shift=self.rpm-(self.rpm/4)
+                    self.shift=1
 #           シフトダウン
-            elif((self.pressed[K_LCTRL]==True)and(self.gear_n-1>0)):
-                self.gear_n=self.gear_n-1
-                self.gear=self.gear_ratio[self.gear_n-1]
-            self.gear_ck=1
-        if((self.pressed[K_LSHIFT]==False)and(self.pressed[K_LCTRL]==False)):
-            self.gear_ck=0
+                elif((self.pressed[K_LCTRL]==True)and(self.gear_n-1>0)):
+                    self.gear_n=self.gear_n-1
+                    self.gear=self.gear_ratio[self.gear_n-1]
+                    self.rpm_shift=self.rpm+(self.rpm/4)
+                    self.shift=2
+                self.gear_ck=1
+            if((self.pressed[K_LSHIFT]==False)and(self.pressed[K_LCTRL]==False)):
+                self.gear_ck=0
 #       セル
-        if((self.pressed[K_c]==True)and(self.rpm<500)):
+            if((self.pressed[K_c]==True)and(self.rpm<500)):
+                self.rpm=self.rpm+100
+#       シフトアップ中
+        elif(self.shift==1):
+            self.rpm=self.rpm-100
+            if(self.rpm<self.rpm_shift):
+                self.shift=0
+#       シフトダウン中
+        elif(self.shift==2):
             self.rpm=self.rpm+100
+            if(self.rpm>self.rpm_shift):
+                self.shift=0
+        for i in range(0,int(self.rev/100)):
+            if(int(self.rpm)<int(i+1)*100):
+                self.power_array=i
+                break
                         
 class meter:
     def __init__(self):
