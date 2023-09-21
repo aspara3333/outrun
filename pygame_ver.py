@@ -146,7 +146,11 @@ class meter:
         screen.blit(self.defi,(1050,500))
         screen.blit(self.defi_arrow_rotate,self.arrow_pos)
         
-
+#class background:
+#    def __init__(self):
+        
+    
+    
 driving=Car('rx8')
 defi=meter()
 defi.display()
