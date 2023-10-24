@@ -146,14 +146,22 @@ class meter:
         screen.blit(self.defi,(1050,500))
         screen.blit(self.defi_arrow_rotate,self.arrow_pos)
         
-#class background:
-#    def __init__(self):
-        
+class background:
+    def __init__(self):
+        self.backgrounds=[]
+        self.odo=0
+        for i in range(1,41):
+            self.backgrounds.append(pg.image.load(f'./image/processed/start/outrun{i:04}.png'))
+        self.bflag=pg.image.load('./image/processed/start/blue_flag.png')
+        self.yflag=pg.image.load('./image/processed/start/yellow_flag.png')
+        self.rflag=pg.image.load('./image/processed/start/red_flag.png')
+                
     
     
 driving=Car('rx8')
 defi=meter()
 defi.display()
+bg=background()
 
 def main():
 #   画像読み込み
