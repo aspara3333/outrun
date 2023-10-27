@@ -7,10 +7,10 @@ import configparser
 car_ini=configparser.ConfigParser()
 car_ini.read('./car.ini',encoding='UTF-8')
 
-window_size=WIDTH,HEIGHT=1280,720
+window_size=WIDTH,HEIGHT=1542,1080
 bg_color=(0,0,0)
 FPS=30
-
+#262    360
 pg.init()
 screen=pg.display.set_mode(window_size)
 pg.display.set_caption('outrun')
@@ -23,7 +23,7 @@ def rotate(screen,image,angle):
 
 class Car:
     global car_ini
-    def __init__(self,model):
+    def __init__(self,model,tm):
 #   初期化
         self.model=model
         self.power=[]
@@ -44,6 +44,7 @@ class Car:
         self.torque=0
         self.shift=0
         self.rpm_shift=0
+        self.transmission=tm
 #   車両データ読み込み
         self.speed=int(car_ini[f'{self.model}']['speed'])
         self.rev=int(car_ini[f'{self.model}']['rev'])
@@ -79,43 +80,72 @@ class Car:
                         self.power_array=i
                         self.rpm=self.rpm+(int(self.power[self.power_array]))
                         break
+                    
 #       アクセルオフ
             elif((self.pressed[K_w]==False)and(self.rpm>600)):
                 print('kansei')
                 self.rpm=self.rpm-50
+                
 #       ブレーキ
             if((self.pressed[K_s]==True)and(self.rpm>100)):
                 print('brake')
                 self.rpm=self.rpm-100
-            if(self.gear_ck==0):
-#           シフトアップ
-                if((self.pressed[K_LSHIFT]==True)and(self.gear_n<self.speed)):
-                    self.gear_n=self.gear_n+1
-                    self.gear=self.gear_ratio[self.gear_n-1]
-                    self.rpm_shift=self.rpm-(self.rpm/4)
-                    self.shift=1
-#           シフトダウン
-                elif((self.pressed[K_LCTRL]==True)and(self.gear_n-1>0)):
-                    self.gear_n=self.gear_n-1
-                    self.gear=self.gear_ratio[self.gear_n-1]
-                    self.rpm_shift=self.rpm+(self.rpm/4)
-                    self.shift=2
-                self.gear_ck=1
-            if((self.pressed[K_LSHIFT]==False)and(self.pressed[K_LCTRL]==False)):
-                self.gear_ck=0
+                
 #       セル
             if((self.pressed[K_c]==True)and(self.rpm<500)):
                 self.rpm=self.rpm+100
+
+#               MT
+            if(self.transmission=='MT'):    
+                if(self.gear_ck==0):
+                    
+    #           シフトアップ
+                    if((self.pressed[K_LSHIFT]==True)and(self.gear_n<self.speed)):
+                        self.gear_n=self.gear_n+1
+                        self.gear=self.gear_ratio[self.gear_n-1]
+                        self.rpm_shift=self.rpm-(self.rpm/4)
+                        self.shift=1
+                        
+    #           シフトダウン
+                    elif((self.pressed[K_LCTRL]==True)and(self.gear_n-1>0)):
+                        self.gear_n=self.gear_n-1
+                        self.gear=self.gear_ratio[self.gear_n-1]
+                        self.rpm_shift=self.rpm+(self.rpm/4)
+                        self.shift=2
+                    self.gear_ck=1
+                if((self.pressed[K_LSHIFT]==False)and(self.pressed[K_LCTRL]==False)):
+                    self.gear_ck=0
+#               AT
+            elif(self.transmission=='AT'):
+                if(self.gear_ck==0):
+    #           シフトアップ       
+                    if((self.rpm>(self.rev-1000))and(self.gear_n>self.speed)):
+                        self.gear_n=self.gear_n+1
+                        self.gear=self.gear_ratio[self.gear_n-1]
+                        self.rpm_shift=self.rpm-(self.rpm/4)
+                        self.shift=1
+    #           シフトダウン
+                    elif((self.rpm<3500)and(self.gear_n-1>0)):
+                        self.gear_n=self.gear_n-1
+                        self.gear=self.gear_ratio[self.gear_n-1]
+                        self.rpm_shift=self.rpm+(self.rpm/4)
+                        self.shift=2
+                    self.gear_ck=1
+                if((self.rpm<(self.rev-1000))and(self.rpm>3500)):
+                    self.ger_ck=0
+                    
 #       シフトアップ中
         elif(self.shift==1):
             self.rpm=self.rpm-100
             if(self.rpm<self.rpm_shift):
                 self.shift=0
+                
 #       シフトダウン中
         elif(self.shift==2):
             self.rpm=self.rpm+100
             if(self.rpm>self.rpm_shift):
                 self.shift=0
+                
         for i in range(0,int(self.rev/100)):
             if(int(self.rpm)<int(i+1)*100):
                 self.power_array=i
@@ -128,8 +158,8 @@ class meter:
         self.defi_arrow=pg.image.load('./image/defi_arrow.png')
         self.defi_arrow_rotate=pg.image.load('./image/defi_arrow.png')
         self.defi_arrow_rotated=pg.image.load('./image/defi_arrow.png')
-        self.defi=pg.transform.scale(self.defi,(200,200))
-        self.defi_arrow=pg.transform.scale(self.defi_arrow,(200,200))
+        self.defi=pg.transform.scale(self.defi,(300,300))
+        self.defi_arrow=pg.transform.scale(self.defi_arrow,(300,300))
         self.arrow_deg=0
         self.arrow_pos=0,0
         self.arrow_size=0
@@ -140,10 +170,10 @@ class meter:
         self.defi_arrow_rotate=pg.transform.rotate(self.defi_arrow,self.arrow_deg)
         self.arrow_rotate_size=self.defi_arrow_rotate.get_size()
         self.arrow_size=self.defi_arrow.get_size()
-        self.arrow_pos=((self.arrow_size[0]+self.arrow_size[1]/2-self.arrow_rotate_size[0]/2)+850,(self.arrow_size[1]+self.arrow_size[1]/2-self.arrow_rotate_size[1]/2)+300)
+        self.arrow_pos=((self.arrow_size[0]+self.arrow_size[1]/2-self.arrow_rotate_size[0]/2)+950,(self.arrow_size[1]+self.arrow_size[1]/2-self.arrow_rotate_size[1]/2)+475)
         
     def display(self):
-        screen.blit(self.defi,(1050,500))
+        screen.blit(self.defi,(1250,775))
         screen.blit(self.defi_arrow_rotate,self.arrow_pos)
         
 class background:
@@ -152,16 +182,21 @@ class background:
         self.odo=0
         for i in range(1,41):
             self.backgrounds.append(pg.image.load(f'./image/processed/start/outrun{i:04}.png'))
+#            print(self.backgrounds[i-1])
         self.bflag=pg.image.load('./image/processed/start/blue_flag.png')
         self.yflag=pg.image.load('./image/processed/start/yellow_flag.png')
         self.rflag=pg.image.load('./image/processed/start/red_flag.png')
-                
+        screen.blit(self.rflag,(0,0))
+        
+    def write(self):
+          
     
     
-driving=Car('rx8')
+driving=Car('rx8','AT')
 defi=meter()
 defi.display()
 bg=background()
+
 
 def main():
 #   画像読み込み
