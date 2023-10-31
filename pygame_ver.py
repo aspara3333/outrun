@@ -122,32 +122,33 @@ class Car:
             elif(self.transmission=='AT'):
                 if(self.gear_ck==0):
     #           シフトアップ       
-                    if((self.rpm>(self.rev-1000))and(self.gear_n>self.speed)):
+                    if((self.rpm>(self.rev-1500))and(self.gear_n<self.speed)):
                         self.gear_n=self.gear_n+1
                         self.gear=self.gear_ratio[self.gear_n-1]
                         self.rpm_shift=self.rpm-(self.rpm/4)
                         self.shift=1
+                        self.gear_ck=1
     #           シフトダウン
                     elif((self.rpm<3500)and(self.gear_n-1>0)):
                         self.gear_n=self.gear_n-1
                         self.gear=self.gear_ratio[self.gear_n-1]
                         self.rpm_shift=self.rpm+(self.rpm/4)
                         self.shift=2
-                    self.gear_ck=1
-                if((self.rpm<(self.rev-1000))and(self.rpm>3500)):
-                    self.ger_ck=0
+                        self.gear_ck=1
                     
 #       シフトアップ中
         elif(self.shift==1):
             self.rpm=self.rpm-100
             if(self.rpm<self.rpm_shift):
                 self.shift=0
+                self.gear_ck=0
                 
 #       シフトダウン中
         elif(self.shift==2):
             self.rpm=self.rpm+100
             if(self.rpm>self.rpm_shift):
                 self.shift=0
+                self.gear_ck=0
                 
         for i in range(0,int(self.rev/100)):
             if(int(self.rpm)<int(i+1)*100):
@@ -191,7 +192,7 @@ class background:
         self.rflag=pg.image.load('./image/processed/start/red_flag.png')
         screen.blit(self.rflag,(0,0))
         
-    def write(self):
+#    def write(self):
           
     
     
