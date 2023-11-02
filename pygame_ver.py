@@ -69,7 +69,7 @@ class Car:
             self.kmh=int((float(self.rpm))/((self.gear)*(self.final))*float(self.outer_cir)*60.0/1000.0)
         self.torque=((self.power[self.power_array]/1.3596)/(self.rpm*2*3.14/60/100))
         acc=((self.power_array*2*self.gear*self.final)/(self.radius*self.weight))
-        print(f'TORQUE:{round(self.torque,0)}, RPM:{self.rpm}, km/h:{round(self.kmh,0)}, gear:{self.gear_n}, gear_ratio:{self.gear}, acc:{acc}, power_array:{self.power_array}')
+        print(f'TORQUE:{round(self.torque,0)}, RPM:{self.rpm}, km/h:{round(self.kmh,0)}, gear:{self.gear_n}, gear_ratio:{self.gear}, acc:{acc}, power_array:{self.power_array}',end='')
 #   エンジン
     def engine(self):
         pg.event.pump()
@@ -81,17 +81,17 @@ class Car:
                 for i in range(0,int(self.rev/100)):
                     if(int(self.rpm)<int(i+1)*100):
                         self.power_array=i
-                        self.rpm=self.rpm+(int(self.power[self.power_array]))
+                        self.rpm=self.rpm+(int(self.power[self.power_array])/4*3)
                         break
                     
 #       アクセルオフ
             elif((self.pressed[K_w]==False)and(self.rpm>600)):
-                print('kansei')
+#                print('kansei')
                 self.rpm=self.rpm-50
                 
 #       ブレーキ
             if((self.pressed[K_s]==True)and(self.rpm>100)):
-                print('brake')
+#                print('brake')
                 self.rpm=self.rpm-100
                 
 #       セル
@@ -184,19 +184,25 @@ class background:
     def __init__(self):
         self.backgrounds=[]
         self.odo=0
-        for i in range(1,41):
+        for i in range(1,42):
             self.backgrounds.append(pg.image.load(f'./image/processed/start/outrun{i:04}.png'))
 #            print(self.backgrounds[i-1])
         self.bflag=pg.image.load('./image/processed/start/blue_flag.png')
         self.yflag=pg.image.load('./image/processed/start/yellow_flag.png')
         self.rflag=pg.image.load('./image/processed/start/red_flag.png')
         screen.blit(self.rflag,(0,0))
-        
-#    def write(self):
+    
+    def odo_read(self,odom):
+        mms=odom/3.6
+        self.odo=self.odo+mms
+
+    def write(self):
+        bgp=int(self.odo/100)
+        screen.blit(self.backgrounds[bgp],(0,0))
           
     
     
-driving=Car('rx8','AT')
+driving=Car('rx8','MT')
 defi=meter()
 defi.display()
 bg=background()
@@ -211,9 +217,12 @@ def main():
         driving.engine()
         driving.vehicle_spd()
         defi.write(driving.rpm)
+        bg.odo_read(driving.kmh)
+        bg.write()
         defi.display()
+        print(f', odo:{bg.odo}')
         pg.display.update()
-        screen.fill(bg_color)
+#        screen.fill(bg_color)
         clock.tick(FPS)
 
 if(__name__=='__main__'):
