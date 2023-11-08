@@ -10,6 +10,7 @@ car_ini.read('./car.ini',encoding='UTF-8')
 window_size=WIDTH,HEIGHT=1542,1080
 bg_color=(0,0,0)
 FPS=30
+cnt=0
 #262    360
 pg.init()
 screen=pg.display.set_mode(window_size)
@@ -64,7 +65,7 @@ class Car:
     #            self.power_array=i
     #            break
         if(self.gear_n==0):
-            self.kmh=self.kmh
+            self.kmh=self.kmh-100
         else:
             self.kmh=int((float(self.rpm))/((self.gear)*(self.final))*float(self.outer_cir)*60.0/1000.0)
         self.torque=((self.power[self.power_array]/1.3596)/(self.rpm*2*3.14/60/100))
@@ -196,9 +197,17 @@ class background:
         mms=odom/3.6
         self.odo=self.odo+mms
 
-    def write(self):
-        bgp=int(self.odo/100)
-        screen.blit(self.backgrounds[bgp],(0,0))
+    def write(self,cnt1):
+        if(cnt1<200):
+            if(cnt1<100):
+                screen.blit(self.rflag,(0,0))    
+            elif(cnt1<150):
+                screen.blit(self.yflag,(0,0))
+            else:
+                screen.blit(self.bflag,(0,0))
+        else:
+            bgp=int(self.odo/100)
+            screen.blit(self.backgrounds[bgp],(0,0))
           
     
     
@@ -209,6 +218,7 @@ bg=background()
 
 
 def main():
+    global cnt
 #   画像読み込み
 
     #screen.fill(bg_color)
@@ -218,8 +228,9 @@ def main():
         driving.vehicle_spd()
         defi.write(driving.rpm)
         bg.odo_read(driving.kmh)
-        bg.write()
+        bg.write(cnt)
         defi.display()
+        cnt+=1
         print(f', odo:{bg.odo}')
         pg.display.update()
 #        screen.fill(bg_color)
