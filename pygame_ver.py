@@ -65,7 +65,8 @@ class Car:
     #            self.power_array=i
     #            break
         if(self.gear_n==0):
-            self.kmh=self.kmh-100
+            if(self.rpm>300):
+                self.kmh=self.kmh-100
         else:
             self.kmh=int((float(self.rpm))/((self.gear)*(self.final))*float(self.outer_cir)*60.0/1000.0)
         self.torque=((self.power[self.power_array]/1.3596)/(self.rpm*2*3.14/60/100))
@@ -185,6 +186,7 @@ class background:
     def __init__(self):
         self.backgrounds=[]
         self.odo=0
+        self.bgp=0
         for i in range(1,42):
             self.backgrounds.append(pg.image.load(f'./image/processed/start/outrun{i:04}.png'))
 #            print(self.backgrounds[i-1])
@@ -206,19 +208,22 @@ class background:
             else:
                 screen.blit(self.bflag,(0,0))
         else:
-            bgp=int(self.odo/100)
-            screen.blit(self.backgrounds[bgp],(0,0))
+            self.bgp=int(self.odo/100)
+            if(self.bgp<=40):
+                screen.blit(self.backgrounds[self.bgp],(0,0))
+            else:
+                screen.blit(self.backgrounds[40],(0,0))
           
     
     
-driving=Car('rx8','MT')
+driving=Car('rx8','AT')
 defi=meter()
 defi.display()
 bg=background()
 
 
 def main():
-    global cnt
+    global cnt,driving,defi,bg
 #   画像読み込み
 
     #screen.fill(bg_color)
@@ -232,6 +237,14 @@ def main():
         defi.display()
         cnt+=1
         print(f', odo:{bg.odo}')
+        
+        if(bg.bgp>=41):
+            del driving,defi,bg
+            cnt=0
+            driving=Car('rx8','AT')
+            defi=meter()
+            bg=background()
+            
         pg.display.update()
 #        screen.fill(bg_color)
         clock.tick(FPS)
